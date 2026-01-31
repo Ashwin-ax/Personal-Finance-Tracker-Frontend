@@ -1,0 +1,129 @@
+:root {
+  --primary-green: #2ecc71;
+  --primary-dark: #2c3e50;
+  --mint-glow: #a2f0c1;
+  --text-gray: #546e7a;
+  --bg-light: #f8fafc;
+  --white: #ffffff;
+}
+
+/* Page Layout */
+.login-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--mint-glow), var(--bg-light));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* Card */
+.login-card {
+  background: var(--white);
+  padding: 40px;
+  border-radius: 18px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 420px;
+  animation: fadeSlide 0.6s ease;
+}
+
+/* Title */
+.app-title {
+  text-align: center;
+  color: var(--primary-green);
+  margin-bottom: 5px;
+}
+
+.subtitle {
+  text-align: center;
+  color: var(--text-gray);
+  margin-bottom: 25px;
+}
+
+/* Form */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group label {
+  font-size: 14px;
+  color: var(--primary-dark);
+  margin-bottom: 6px;
+}
+
+.input-group input {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #dfe6e9;
+  font-size: 14px;
+  transition: 0.3s ease;
+  outline: none;
+}
+
+.input-group input:focus {
+  border-color: var(--primary-green);
+  box-shadow: 0 0 8px var(--mint-glow);
+}
+
+/* Button */
+.login-btn {
+  background: var(--primary-green);
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(46, 204, 113, 0.4);
+}
+
+/* Register Link */
+.register-link {
+  text-align: center;
+  margin-top: 18px;
+  color: var(--text-gray);
+  font-size: 14px;
+}
+
+.register-link span {
+  color: var(--primary-green);
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Animation */
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .login-card {
+    padding: 25px;
+  }
+}

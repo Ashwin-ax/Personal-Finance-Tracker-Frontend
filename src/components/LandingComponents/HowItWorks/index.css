@@ -1,0 +1,134 @@
+:root {
+  --primary-green: #2ecc71;
+  --primary-dark: #2c3e50;
+  --mint-glow: #a2f0c1;
+  --text-gray: #546e7a;
+  --bg-light: #f8fafc;
+  --white: #ffffff;
+}
+
+/* SECTION BASE */
+.how-section {
+  background: linear-gradient(135deg, var(--bg-light), #eefaf3);
+  padding: 100px 20px;
+  text-align: center;
+}
+
+.how-container {
+  max-width: 1200px;
+  margin: auto;
+}
+
+.how-title {
+  font-size: 2.2rem;
+  color: var(--primary-dark);
+  margin-bottom: 70px;
+  animation: fadeUp 0.8s ease;
+}
+
+/* STEPS LAYOUT */
+.steps-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+/* STEP CARD */
+.step-card {
+  background: var(--white);
+  padding: 35px 25px;
+  border-radius: 18px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.06);
+  width: 280px;
+  position: relative;
+  transition: 0.4s;
+  animation: fadeUp 1s ease;
+}
+
+.step-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 45px rgba(46, 204, 113, 0.15);
+}
+
+/* STEP NUMBER */
+.step-number {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--mint-glow), var(--primary-green));
+  color: var(--white);
+  font-weight: bold;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 15px auto;
+  box-shadow: 0 8px 20px rgba(46, 204, 113, 0.3);
+}
+
+/* TEXT */
+.step-card h3 {
+  color: var(--primary-dark);
+  margin-bottom: 10px;
+}
+
+.step-card p {
+  color: var(--text-gray);
+  font-size: 0.95rem;
+}
+
+/* CONNECTOR LINE */
+.connector {
+  height: 4px;
+  width: 60px;
+  background: linear-gradient(90deg, var(--mint-glow), var(--primary-green));
+  border-radius: 10px;
+  animation: pulse 2s infinite;
+}
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+
+/* 📱 RESPONSIVE */
+@media (max-width: 900px) {
+  .steps-wrapper {
+    flex-direction: column;
+  }
+
+  .connector {
+    width: 4px;
+    height: 40px;
+  }
+}
+
+@media (max-width: 600px) {
+  .step-card {
+    width: 100%;
+  }
+
+  .how-title {
+    font-size: 1.8rem;
+  }
+}
