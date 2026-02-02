@@ -13,7 +13,7 @@ const Home = () => {
       <div className="background-blur"></div>
 
       <div className="content-card">
-        <h1 className="logo-text">🚀 Project In Progress re bhai</h1>
+        <h1 className="logo-text">🚀 Project In Progress</h1>
 
         <p className="subtitle">We're building something amazing for you.</p>
 

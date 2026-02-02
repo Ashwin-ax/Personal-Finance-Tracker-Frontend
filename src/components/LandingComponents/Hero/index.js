@@ -34,23 +34,23 @@ const Hero = () => {
         <div className="hero-visual">
           <div className="dashboard-card">
             <h3>Total Balance</h3>
-            <h2>$12,450</h2>
+            <h2>₹12,450</h2>
             <p className="positive">+8.2% this month</p>
           </div>
 
           <div className="stat-card stat-income">
             <h4>Income</h4>
-            <p>$4,200</p>
+            <p>₹4,200</p>
           </div>
 
           <div className="stat-card stat-expense">
             <h4>Expenses</h4>
-            <p>$2,150</p>
+            <p>₹2,150</p>
           </div>
 
           <div className="stat-card stat-savings">
             <h4>Savings</h4>
-            <p>$2,050</p>
+            <p>₹2,050</p>
           </div>
         </div>
       </div>
