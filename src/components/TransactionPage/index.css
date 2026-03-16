@@ -1,0 +1,113 @@
+.transaction-page {
+  background-color: var(--bg-light);
+  min-height: 100vh;
+  padding-top: 30px;
+}
+
+.main-content {
+  max-width: 1300px; /* Wide view */
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.title {
+  color: var(--primary-dark);
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.add-transaction-btn {
+  background-color: var(--primary-green);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.add-transaction-btn:hover {
+  box-shadow: 0 0 15px var(--mint-glow);
+  transform: translateY(-2px);
+}
+
+/* Modal Styling */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(44, 62, 80, 0.5);
+  backdrop-filter: blur(4px);
+  display: grid;
+  place-items: center;
+  z-index: 100;
+}
+
+.modal-card {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 450px;
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.modal-form input,
+.modal-form select,
+.modal-form textarea {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  outline-color: var(--primary-green);
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.save {
+  background: var(--primary-green);
+  color: white;
+  border: none;
+  flex: 2;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.cancel {
+  background: #eee;
+  color: var(--text-gray);
+  border: none;
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-slide-up {
+  animation: slide-up 0.4s ease;
+}

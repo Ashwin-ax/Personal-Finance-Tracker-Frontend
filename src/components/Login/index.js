@@ -13,14 +13,14 @@ const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = Cookies.get("jwt-token");
+    const token = Cookies.get("jwt_token");
     if (token !== undefined) {
       navigate("/home", { replace: true });
     }
   }, [navigate]);
 
   const onSubmitSuccess = (jwtToken) => {
-    Cookies.set("jwt-token", jwtToken, { expires: 7 });
+    Cookies.set("jwt_token", jwtToken, { expires: 7 });
     navigate("/home", { replace: true });
     setIsLoading(false);
   };

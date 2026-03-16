@@ -1,0 +1,120 @@
+.table-wrapper {
+  background: var(--white);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+/* Base row style for header and body */
+.table-header,
+.table-row {
+  display: flex;
+  align-items: center;
+  padding: 16px 24px;
+  transition: 0.2s;
+}
+
+.table-header {
+  background: #fcfdfe;
+  border-bottom: 2px solid #f1f5f7;
+}
+
+.table-header div {
+  color: var(--text-gray);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.table-row {
+  border-bottom: 1px solid #f8fafc;
+}
+
+.table-row:hover {
+  background: #f9fbff;
+}
+
+/* COLUMN ALIGNMENT SYSTEM */
+.col-sr {
+  width: 5%;
+}
+.col-title {
+  width: 25%;
+}
+.col-amount {
+  width: 15%;
+  font-weight: 700;
+}
+.col-cat {
+  width: 15%;
+}
+.col-date {
+  width: 15%;
+}
+.col-notes {
+  width: 15%;
+}
+.col-actions {
+  width: 10%;
+  display: flex;
+  gap: 8px;
+}
+
+/* Category Badge */
+.badge {
+  background: var(--mint-glow);
+  color: #1b7a43;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+/* Action Buttons */
+.edit-action {
+  background: #eef2ff;
+  color: #4f46e5;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.delete-action {
+  background: #fef2f2;
+  color: #dc2626;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.edit-action:hover {
+  background: #4f46e5;
+  color: white;
+}
+.delete-action:hover {
+  background: #dc2626;
+  color: white;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .table-wrapper {
+    overflow-x: auto;
+  }
+  .table-header,
+  .table-row {
+    min-width: 900px;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.animate-fade-in {
+  animation: fade-in 0.8s ease;
+}

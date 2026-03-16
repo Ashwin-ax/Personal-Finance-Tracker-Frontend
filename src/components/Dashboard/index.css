@@ -1,0 +1,130 @@
+:root {
+  --primary-green: #2ecc71;
+  --primary-dark: #2c3e50;
+  --mint-glow: #a2f0c1;
+  --text-gray: #546e7a;
+  --bg-light: #f8fafc;
+  --white: #ffffff;
+}
+
+.dashboard-page {
+  background-color: var(--bg-light);
+  min-height: 100vh;
+  border: 2px solid red;
+  padding-top: 30px;
+}
+
+.dashboard-page .main-content {
+  padding: 30px 4%;
+}
+
+.dashboard-title {
+  color: var(--primary-dark);
+  font-weight: 700;
+  font-size: 24px;
+  margin-bottom: 25px;
+}
+
+/* Summary Bar */
+.summary-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-bottom: 35px;
+}
+
+.summary-card {
+  background: var(--white);
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  transition: transform 0.3s ease;
+}
+
+.summary-card:hover {
+  transform: translateY(-5px);
+}
+.summary-card p {
+  color: var(--text-gray);
+  font-size: 14px;
+  margin: 0;
+  font-weight: 500;
+}
+.summary-card h2 {
+  margin: 10px 0 0;
+  font-size: 28px;
+}
+
+.text-success {
+  color: var(--primary-green);
+}
+.text-danger {
+  color: #e74c3c;
+}
+
+/* Main Grid */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: 30px;
+}
+
+.glass-card {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.section-subtitle {
+  margin-top: 0;
+  color: var(--primary-dark);
+  font-size: 18px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid var(--bg-light);
+  padding-bottom: 12px;
+}
+
+.no-data-msg {
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-gray);
+  font-style: italic;
+}
+
+.loading-screen {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  color: var(--primary-dark);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease forwards;
+}
+.delay-1 {
+  animation-delay: 0.2s;
+}
+
+@media (max-width: 1100px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
