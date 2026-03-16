@@ -15,13 +15,13 @@ const Login = () => {
   useEffect(() => {
     const token = Cookies.get("jwt_token");
     if (token !== undefined) {
-      navigate("/dashboard", { replace: true });
+      navigate("/transactions", { replace: true }); // Consistent redirect
     }
   }, [navigate]);
 
   const onSubmitSuccess = (jwtToken) => {
     Cookies.set("jwt_token", jwtToken, { expires: 7 });
-    navigate("/home", { replace: true });
+    navigate("/transactions", { replace: true });
     setIsLoading(false);
   };
 
