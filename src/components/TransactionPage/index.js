@@ -72,8 +72,8 @@ const TransactionPage = () => {
 
     // Determine if we are updating or creating
     const url = editingId
-      ? `http://localhost:5000/api/transactions/${editingId}`
-      : "http://localhost:5000/api/transactions";
+      ? `https://personal-finance-tracker-backend-io9r.onrender.com/api/transactions/${editingId}`
+      : "https://personal-finance-tracker-backend-io9r.onrender.com/api/transactions";
 
     const method = editingId ? "PUT" : "POST";
 
