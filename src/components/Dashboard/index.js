@@ -5,6 +5,11 @@ import {
   Cell,
   Tooltip,
   ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
   Legend,
 } from "recharts";
 import Navbar from "../Navbar";
@@ -13,59 +18,73 @@ import "./index.css";
 
 const Dashboard = () => {
   const [transactions, setTransactions] = useState([]);
+  const [budgets, setBudgets] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // 1. Fetch real data from your MongoDB backend
+  const categories = [
+    "Food",
+    "Housing",
+    "Clothing",
+    "Travel",
+    "Entertainment",
+    "Other",
+  ];
+
   useEffect(() => {
-    const fetchTransactions = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/transactions");
-        const data = await response.json();
-        setTransactions(data);
+        const [transRes, budgetRes] = await Promise.all([
+          fetch(
+            "https://personal-finance-tracker-backend-io9r.onrender.com/api/transactions",
+          ),
+          fetch(
+            "https://personal-finance-tracker-backend-io9r.onrender.com/api/budgets",
+          ),
+        ]);
+        const transData = await transRes.json();
+        const budgetData = await budgetRes.json();
+        setTransactions(transData);
+        setBudgets(budgetData);
         setLoading(false);
       } catch (err) {
-        console.error("Error fetching dashboard data:", err);
+        console.error("Dashboard Fetch Error:", err);
         setLoading(false);
       }
     };
-    fetchTransactions();
+    fetchData();
   }, []);
 
-  // 2. Data Processing for Summary Cards
   const totalIncome = transactions
     .filter((t) => t.category === "Income")
-    .reduce((acc, curr) => acc + curr.amount, 0);
+    .reduce((sum, t) => sum + t.amount, 0);
 
-  const totalExpenses = transactions
+  const totalExpense = transactions
     .filter((t) => t.category !== "Income")
-    .reduce((acc, curr) => acc + curr.amount, 0);
+    .reduce((sum, t) => sum + t.amount, 0);
 
-  const balance = totalIncome - totalExpenses;
+  const budgetComparisonData = categories.map((cat) => {
+    const limitObj = budgets.find((b) => b.category === cat);
+    const spent = transactions
+      .filter((t) => t.category === cat)
+      .reduce((sum, t) => sum + t.amount, 0);
+    return {
+      name: cat,
+      spent: spent,
+      limit: limitObj ? limitObj.limit : 0,
+    };
+  });
 
-  // 3. Prepare Data for Pie Chart (Excluding 'Income' to show spending)
-  const chartData = transactions
-    .filter((t) => t.category !== "Income")
-    .reduce((acc, curr) => {
-      const found = acc.find((item) => item.name === curr.category);
-      if (found) {
-        found.value += curr.amount;
-      } else {
-        acc.push({ name: curr.category, value: curr.amount });
-      }
-      return acc;
-    }, []);
-
-  // Your requested color palette mapping
   const COLORS = [
     "#2ecc71",
+    "#27ae60",
     "#2c3e50",
     "#546e7a",
     "#a2f0c1",
     "#34495e",
-    "#27ae60",
   ];
 
-  if (loading) return <div className="loading-screen">Syncing Ledger...</div>;
+  if (loading)
+    return <div className="loading-screen">Updating Finances...</div>;
 
   return (
     <div className="dashboard-page">
@@ -75,78 +94,74 @@ const Dashboard = () => {
           <h1 className="dashboard-title">Dashboard Overview</h1>
         </header>
 
-        {/* Financial Summary Top Bar */}
-        <div className="summary-container animate-slide-down">
-          <div className="summary-card balance-card">
-            <p>Total Balance</p>
-            <h2
-              style={{
-                color: balance >= 0 ? "var(--primary-green)" : "#e74c3c",
-              }}
-            >
-              ₹ {balance.toLocaleString()}
-            </h2>
+        <div className="compact-summary-row">
+          <div className="mini-card income">
+            <span className="label">Total Income</span>
+            <span className="value">₹{totalIncome.toLocaleString()}</span>
           </div>
-          <div className="summary-card income-card">
-            <p>Total Income</p>
-            <h2 className="text-success">₹ {totalIncome.toLocaleString()}</h2>
-          </div>
-          <div className="summary-card expense-card">
-            <p>Total Expenses</p>
-            <h2 className="text-danger">₹ {totalExpenses.toLocaleString()}</h2>
+          <div className="mini-card expense">
+            <span className="label">Total Expense</span>
+            <span className="value">₹{totalExpense.toLocaleString()}</span>
           </div>
         </div>
 
         <div className="dashboard-grid">
-          {/* Left Side: Expense Pie Chart */}
-          <div className="glass-card chart-section animate-fade-in">
-            <h3 className="section-subtitle">Expense Distribution</h3>
-            <div className="recharts-wrapper">
-              {chartData.length > 0 ? (
-                <ResponsiveContainer width="100%" height={350}>
-                  <PieChart>
-                    <Pie
-                      data={chartData}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={70}
-                      outerRadius={100}
-                      paddingAngle={8}
-                      dataKey="value"
-                      stroke="none"
-                    >
-                      {chartData.map((entry, index) => (
-                        <Cell
-                          key={`cell-${index}`}
-                          fill={COLORS[index % COLORS.length]}
-                        />
-                      ))}
-                    </Pie>
-                    <Tooltip
-                      contentStyle={{
-                        borderRadius: "10px",
-                        border: "none",
-                        boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-                      }}
+          <div className="glass-card chart-container">
+            <h3>Expense Distribution</h3>
+            <ResponsiveContainer width="100%" height={280}>
+              <PieChart>
+                <Pie
+                  data={budgetComparisonData.filter((d) => d.spent > 0)}
+                  innerRadius={60}
+                  outerRadius={80}
+                  dataKey="spent"
+                >
+                  {budgetComparisonData.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
                     />
-                    <Legend verticalAlign="bottom" height={36} />
-                  </PieChart>
-                </ResponsiveContainer>
-              ) : (
-                <div className="no-data-msg">No expenses recorded yet.</div>
-              )}
-            </div>
+                  ))}
+                </Pie>
+                <Tooltip />
+                <Legend verticalAlign="bottom" />
+              </PieChart>
+            </ResponsiveContainer>
           </div>
-          {/* Right Side: Recent Transactions */}
-          <div className="glass-card table-section animate-fade-in delay-1">
+          <div className="glass-card chart-container">
+            <h3>Budget vs Actual</h3>
+            <ResponsiveContainer width="100%" height={280}>
+              <BarChart data={budgetComparisonData}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                <XAxis
+                  dataKey="name"
+                  axisLine={false}
+                  tickLine={false}
+                  fontSize={12}
+                />
+                <YAxis axisLine={false} tickLine={false} fontSize={12} />
+                <Tooltip cursor={{ fill: "#f4f4f5" }} />
+                <Bar
+                  dataKey="limit"
+                  fill="#546e7a"
+                  radius={[4, 4, 0, 0]}
+                  name="Limit"
+                />
+                <Bar
+                  dataKey="spent"
+                  fill="#2ecc71"
+                  radius={[4, 4, 0, 0]}
+                  name="Spent"
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+          <div className="glass-card full-width">
             <h3 className="section-subtitle">Recent Activity</h3>
-            <div className="recent-table-container">
-              {/* By setting showActions to false, we prevent the 'onDelete' crash entirely */}
-              <TransactionsTable
-                transactions={transactions.slice(0, 5)}
-                showActions={false}
-              />
-            </div>
+            <TransactionsTable
+              transactions={transactions.slice(0, 5)}
+              showActions={false}
+            />
           </div>
         </div>
       </div>

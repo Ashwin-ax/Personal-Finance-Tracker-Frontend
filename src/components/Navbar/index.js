@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import React, { useState } from "react";
 import "./index.css";
@@ -15,13 +15,30 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="nav-container">
-        {/* Logo */}
-        <div className="logo">💰 FinanceTracker</div>
+        <Link
+          to="/dashboard"
+          className="logo"
+          style={{ textDecoration: "none" }}
+        >
+          💰 FinanceTracker
+        </Link>
 
-        {/* Desktop Menu */}
         <ul className={`nav-links ${menuOpen ? "active" : ""}`}>
-          <li>Dashboard</li>
-          <li>Transaction</li>
+          <li>
+            <Link to="/dashboard">Dashboard</Link>
+          </li>
+          <li>
+            <Link to="/transactions">Transaction</Link>
+          </li>
+          <li>
+            <Link to="/budget">Budget</Link>
+          </li>
+          <li>
+            <Link to="/investments">Investments</Link>
+          </li>
+          <li>
+            <Link to="/insights">Insights</Link>
+          </li>
           <li>
             <button className="btn-solid" onClick={onClickDelete}>
               Logout

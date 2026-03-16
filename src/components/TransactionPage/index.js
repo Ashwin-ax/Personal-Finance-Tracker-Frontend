@@ -21,7 +21,9 @@ const TransactionPage = () => {
 
   const fetchTransactions = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/transactions");
+      const response = await fetch(
+        "https://personal-finance-tracker-backend-io9r.onrender.com/api/transactions",
+      );
       const data = await response.json();
       setTransactions(data);
     } catch (err) {
@@ -51,7 +53,7 @@ const TransactionPage = () => {
     if (window.confirm("Are you sure you want to delete this transaction?")) {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/transactions/${id}`,
+          `https://personal-finance-tracker-backend-io9r.onrender.com/api/transactions/${id}`,
           {
             method: "DELETE",
           },
