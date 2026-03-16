@@ -15,7 +15,7 @@ const Login = () => {
   useEffect(() => {
     const token = Cookies.get("jwt_token");
     if (token !== undefined) {
-      navigate("/home", { replace: true });
+      navigate("/dashboard", { replace: true });
     }
   }, [navigate]);
 
