@@ -35,7 +35,7 @@ const Login = () => {
 
     try {
       const response = await fetch(
-        "https://personal-finance-tracker-backend-io9r.onrender.com/login",
+        "https://personal-finance-tracker-backend-io9r.onrender.com/api/login",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -52,6 +52,7 @@ const Login = () => {
         setIsLoading(false);
       }
     } catch (error) {
+      console.log(error);
       alert("Server Error");
       setIsLoading(false);
     }
