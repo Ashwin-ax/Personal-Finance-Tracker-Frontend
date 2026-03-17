@@ -4,75 +4,59 @@
   --primary-blue: #2c3e50;
   --bg-light: #f8fafc;
   --white: #ffffff;
-  --mint-green: #98fb98;
 }
 
 .dashboard-page .main-content {
-  padding: 30px 4%;
-  padding-top: 60px;
+  padding: 20px 5%;
+  padding-top: 80px; /* Space for Navbar */
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
-/* Small Compact Cards */
+/* Responsive Summary Row */
 .compact-summary-row {
-  width: 100%;
   display: flex;
-  justify-content: space-around;
-  gap: 15px;
   margin-bottom: 25px;
 }
 
 .mini-card {
-  padding: 12px 20px;
-  border-radius: 10px;
+  padding: 10px;
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
-  min-width: 160px; /* Compact width */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  background-color: var(--white);
+  border-left: 6px solid;
+  width: 33%;
+  margin: 6px;
 }
 
 .mini-card .label {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
-  opacity: 0.9;
-}
-.mini-card .value {
-  font-size: 18px;
-  font-weight: 700;
-  margin-top: 4px;
+  color: #64748b;
 }
 
-/* Colors for specific categories */
+.mini-card .value {
+  font-size: clamp(1.2rem, 4vw, 1.6rem); /* Responsive font size */
+  font-weight: 700;
+  margin-top: 5px;
+}
+
 .income {
-  border: 5px solid var(--primary-green);
-  border-top: none;
-  border-right: none;
-  border-bottom: none;
-  color: var(--primary-blue);
-  background-color: var(--bg-light);
-  border-radius: 8px;
-  box-shadow: 0px 2px 4px 0px grey;
-  width: 50%;
+  border-color: var(--primary-blue);
 }
 .expense {
-  border: 5px solid var(--primary-red);
-  border-top: none;
-  border-right: none;
-  border-bottom: none;
-  color: var(--primary-blue);
-  background-color: var(--bg-light);
-  border-radius: 8px;
-  box-shadow: 0px 2px 4px 0px grey;
-  width: 50%;
+  border-color: var(--primary-red);
 }
-.budget {
-  background-color: var(--primary-blue);
-  color: white;
+.savings {
+  border-color: var(--primary-green);
 }
 
-/* Layout Grid */
+/* Grid System */
 .dashboard-grid {
   display: grid;
-  grid-template-columns: 1fr 1.2fr;
+  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
 }
 
@@ -84,23 +68,50 @@
   background: var(--white);
   padding: 20px;
   border-radius: 15px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  overflow: hidden; /* Prevents chart bleed */
 }
 
-.chart-container h3 {
-  font-size: 16px;
-  color: var(--primary-blue);
-  margin-bottom: 15px;
+/* Handling Table on Mobile */
+.table-overflow-container {
+  overflow-x: auto;
 }
 
-@media (max-width: 1024px) {
-  .dashboard-grid {
-    grid-template-columns: 1fr;
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+  .dashboard-page .main-content {
+    padding-top: 70px;
   }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr; /* Stack charts vertically */
+  }
+
   .full-width {
     grid-column: span 1;
   }
+
   .compact-summary-row {
-    flex-wrap: wrap;
+    grid-template-columns: 1fr; /* Stack mini-cards vertically */
   }
+
+  .chart-container h3 {
+    text-align: center;
+  }
+}
+
+/* Fix for small chart labels */
+.recharts-wrapper-custom {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.loading-screen {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  color: var(--primary-green);
 }

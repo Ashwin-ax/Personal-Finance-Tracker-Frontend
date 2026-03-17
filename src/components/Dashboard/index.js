@@ -12,6 +12,7 @@ import {
   CartesianGrid,
   Legend,
 } from "recharts";
+import Cookies from "js-cookie";
 import Navbar from "../Navbar";
 import TransactionsTable from "../TransactionsTable";
 import "./index.css";
@@ -32,19 +33,26 @@ const Dashboard = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      const token = Cookies.get("jwt_token");
       try {
         const [transRes, budgetRes] = await Promise.all([
           fetch(
             "https://personal-finance-tracker-backend-io9r.onrender.com/api/transactions",
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            },
           ),
           fetch(
             "https://personal-finance-tracker-backend-io9r.onrender.com/api/budgets",
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            },
           ),
         ]);
         const transData = await transRes.json();
         const budgetData = await budgetRes.json();
-        setTransactions(transData);
-        setBudgets(budgetData);
+        setTransactions(transData || []);
+        setBudgets(budgetData || []);
         setLoading(false);
       } catch (err) {
         console.error("Dashboard Fetch Error:", err);
@@ -103,60 +111,72 @@ const Dashboard = () => {
             <span className="label">Total Expense</span>
             <span className="value">₹{totalExpense.toLocaleString()}</span>
           </div>
+          <div className="mini-card savings">
+            <span className="label">Savings</span>
+            <span className="value">
+              ₹{(totalIncome - totalExpense).toLocaleString()}
+            </span>
+          </div>
         </div>
 
         <div className="dashboard-grid">
           <div className="glass-card chart-container">
             <h3>Expense Distribution</h3>
-            <ResponsiveContainer width="100%" height={280}>
-              <PieChart>
-                <Pie
-                  data={budgetComparisonData.filter((d) => d.spent > 0)}
-                  innerRadius={60}
-                  outerRadius={80}
-                  dataKey="spent"
-                >
-                  {budgetComparisonData.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={COLORS[index % COLORS.length]}
-                    />
-                  ))}
-                </Pie>
-                <Tooltip />
-                <Legend verticalAlign="bottom" />
-              </PieChart>
-            </ResponsiveContainer>
+            <div className="recharts-wrapper-custom">
+              <ResponsiveContainer width="100%" height={300}>
+                <PieChart>
+                  <Pie
+                    data={budgetComparisonData.filter((d) => d.spent > 0)}
+                    innerRadius={60}
+                    outerRadius={80}
+                    dataKey="spent"
+                  >
+                    {budgetComparisonData.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={COLORS[index % COLORS.length]}
+                      />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                  <Legend verticalAlign="bottom" />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
           </div>
+
           <div className="glass-card chart-container">
             <h3>Budget vs Actual</h3>
-            <ResponsiveContainer width="100%" height={280}>
-              <BarChart data={budgetComparisonData}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                <XAxis
-                  dataKey="name"
-                  axisLine={false}
-                  tickLine={false}
-                  fontSize={12}
-                />
-                <YAxis axisLine={false} tickLine={false} fontSize={12} />
-                <Tooltip cursor={{ fill: "#f4f4f5" }} />
-                <Bar
-                  dataKey="limit"
-                  fill="#546e7a"
-                  radius={[4, 4, 0, 0]}
-                  name="Limit"
-                />
-                <Bar
-                  dataKey="spent"
-                  fill="#2ecc71"
-                  radius={[4, 4, 0, 0]}
-                  name="Spent"
-                />
-              </BarChart>
-            </ResponsiveContainer>
+            <div className="recharts-wrapper-custom">
+              <ResponsiveContainer width="100%" height={300}>
+                <BarChart data={budgetComparisonData}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                  <XAxis
+                    dataKey="name"
+                    axisLine={false}
+                    tickLine={false}
+                    fontSize={10}
+                  />
+                  <YAxis axisLine={false} tickLine={false} fontSize={10} />
+                  <Tooltip cursor={{ fill: "#f4f4f5" }} />
+                  <Bar
+                    dataKey="limit"
+                    fill="#546e7a"
+                    radius={[4, 4, 0, 0]}
+                    name="Limit"
+                  />
+                  <Bar
+                    dataKey="spent"
+                    fill="#2ecc71"
+                    radius={[4, 4, 0, 0]}
+                    name="Spent"
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
           </div>
-          <div className="glass-card full-width">
+
+          <div className="glass-card full-width table-overflow-container">
             <h3 className="section-subtitle">Recent Activity</h3>
             <TransactionsTable
               transactions={transactions.slice(0, 5)}

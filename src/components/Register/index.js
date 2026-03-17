@@ -17,7 +17,7 @@ const Register = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = Cookies.get("jwt-token");
+    const token = Cookies.get("jwt_token");
     if (token !== undefined) {
       navigate("/home", { replace: true });
     }

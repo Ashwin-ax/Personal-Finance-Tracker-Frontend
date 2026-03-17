@@ -1,7 +1,6 @@
 import React from "react";
 import "./index.css";
 
-// We add 'showActions' prop which defaults to true
 const TransactionTable = ({
   transactions,
   onEdit,

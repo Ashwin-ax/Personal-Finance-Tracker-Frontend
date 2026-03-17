@@ -5,7 +5,7 @@ import "./index.css";
 const Home = () => {
   const navigate = useNavigate();
   const onClickLogout = () => {
-    Cookies.remove("jwt-token");
+    Cookies.remove("jwt_token");
     navigate("/", { replace: true });
   };
   return (

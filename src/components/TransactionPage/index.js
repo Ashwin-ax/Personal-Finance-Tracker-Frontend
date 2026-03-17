@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Cookies from "js-cookie";
 import Navbar from "../Navbar";
 import TransactionsTable from "../TransactionsTable";
 import "./index.css";
@@ -20,9 +21,11 @@ const TransactionPage = () => {
   }, []);
 
   const fetchTransactions = async () => {
+    const token = Cookies.get("jwt_token");
     try {
       const response = await fetch(
         "https://personal-finance-tracker-backend-io9r.onrender.com/api/transactions",
+        { headers: { Authorization: `Bearer ${token}` } },
       );
       const data = await response.json();
       setTransactions(data);
@@ -50,12 +53,14 @@ const TransactionPage = () => {
 
   // Logic for DELETING
   const handleDelete = async (id) => {
+    const token = Cookies.get("jwt_token");
     if (window.confirm("Are you sure you want to delete this transaction?")) {
       try {
         const response = await fetch(
           `https://personal-finance-tracker-backend-io9r.onrender.com/api/transactions/${id}`,
           {
             method: "DELETE",
+            headers: { Authorization: `Bearer ${token}` },
           },
         );
         if (response.ok) {
@@ -69,8 +74,7 @@ const TransactionPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Determine if we are updating or creating
+    const token = Cookies.get("jwt_token");
     const url = editingId
       ? `https://personal-finance-tracker-backend-io9r.onrender.com/api/transactions/${editingId}`
       : "https://personal-finance-tracker-backend-io9r.onrender.com/api/transactions";
@@ -80,7 +84,10 @@ const TransactionPage = () => {
     try {
       const response = await fetch(url, {
         method: method,
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify(formData),
       });
 
