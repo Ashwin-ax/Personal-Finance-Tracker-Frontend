@@ -36,18 +36,12 @@ const Dashboard = () => {
       const token = Cookies.get("jwt_token");
       try {
         const [transRes, budgetRes] = await Promise.all([
-          fetch(
-            "https://personal-finance-tracker-backend-io9r.onrender.com/api/transactions",
-            {
-              headers: { Authorization: `Bearer ${token}` },
-            },
-          ),
-          fetch(
-            "https://personal-finance-tracker-backend-io9r.onrender.com/api/budgets",
-            {
-              headers: { Authorization: `Bearer ${token}` },
-            },
-          ),
+          fetch(`${process.env.REACT_APP_API_URL}/transactions`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          fetch(`${process.env.REACT_APP_API_URL}/budgets`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
         ]);
         const transData = await transRes.json();
         const budgetData = await budgetRes.json();

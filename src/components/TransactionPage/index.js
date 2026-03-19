@@ -24,7 +24,7 @@ const TransactionPage = () => {
     const token = Cookies.get("jwt_token");
     try {
       const response = await fetch(
-        "https://personal-finance-tracker-backend-io9r.onrender.com/api/transactions",
+        `${process.env.REACT_APP_API_URL}/transactions`,
         { headers: { Authorization: `Bearer ${token}` } },
       );
       const data = await response.json();
@@ -57,7 +57,7 @@ const TransactionPage = () => {
     if (window.confirm("Are you sure you want to delete this transaction?")) {
       try {
         const response = await fetch(
-          `https://personal-finance-tracker-backend-io9r.onrender.com/api/transactions/${id}`,
+          `${process.env.REACT_APP_API_URL}/transactions/${id}`,
           {
             method: "DELETE",
             headers: { Authorization: `Bearer ${token}` },
@@ -75,10 +75,8 @@ const TransactionPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = Cookies.get("jwt_token");
-    const url = editingId
-      ? `https://personal-finance-tracker-backend-io9r.onrender.com/api/transactions/${editingId}`
-      : "https://personal-finance-tracker-backend-io9r.onrender.com/api/transactions";
-
+    const baseUrl = `${process.env.REACT_APP_API_URL}/transactions`;
+    const url = editingId ? `${baseUrl}/${editingId}` : baseUrl;
     const method = editingId ? "PUT" : "POST";
 
     try {

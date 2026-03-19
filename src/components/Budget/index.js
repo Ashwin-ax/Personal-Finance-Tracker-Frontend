@@ -27,18 +27,12 @@ const Budget = () => {
     const token = Cookies.get("jwt_token");
     try {
       const [budgetRes, transRes] = await Promise.all([
-        fetch(
-          "https://personal-finance-tracker-backend-io9r.onrender.com/api/budgets",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
-        ),
-        fetch(
-          "https://personal-finance-tracker-backend-io9r.onrender.com/api/transactions",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
-        ),
+        fetch(`${process.env.REACT_APP_API_URL}/budgets`, {
+          headers: { Authorization: `Bearer ${token}` },
+        }),
+        fetch(`${process.env.REACT_APP_API_URL}}/transactions`, {
+          headers: { Authorization: `Bearer ${token}` },
+        }),
       ]);
       const bData = await budgetRes.json();
       const tData = await transRes.json();
@@ -55,17 +49,14 @@ const Budget = () => {
     e.preventDefault();
     const token = Cookies.get("jwt_token");
     try {
-      const response = await fetch(
-        "https://personal-finance-tracker-backend-io9r.onrender.com/api/budgets",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(formData),
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/budgets`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-      );
+        body: JSON.stringify(formData),
+      });
       if (response.ok) {
         setIsModalOpen(false);
         setFormData({ category: "", limit: "" });

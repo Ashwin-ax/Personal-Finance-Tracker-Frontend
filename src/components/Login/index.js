@@ -15,7 +15,7 @@ const Login = () => {
   useEffect(() => {
     const token = Cookies.get("jwt_token");
     if (token !== undefined) {
-      navigate("/transactions", { replace: true }); // Consistent redirect
+      navigate("/transactions", { replace: true });
     }
   }, [navigate]);
 
@@ -34,14 +34,11 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch(
-        "https://personal-finance-tracker-backend-io9r.onrender.com/api/login",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
-        },
-      );
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
 
       const data = await response.json();
 

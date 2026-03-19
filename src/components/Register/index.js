@@ -32,7 +32,7 @@ const Register = () => {
     setIsLoading(true);
     try {
       const response = await fetch(
-        "https://personal-finance-tracker-backend-io9r.onrender.com/api/register",
+        `${process.env.REACT_APP_API_URL}/register`,
         {
           method: "POST",
           headers: {
