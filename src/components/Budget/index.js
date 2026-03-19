@@ -25,22 +25,31 @@ const Budget = () => {
 
   const fetchData = async () => {
     const token = Cookies.get("jwt_token");
+    if (!token) {
+      setLoading(false);
+      return;
+    }
+
     try {
       const [budgetRes, transRes] = await Promise.all([
         fetch(`${process.env.REACT_APP_API_URL}/budgets`, {
           headers: { Authorization: `Bearer ${token}` },
         }),
-        fetch(`${process.env.REACT_APP_API_URL}}/transactions`, {
+        fetch(`${process.env.REACT_APP_API_URL}/transactions`, {
           headers: { Authorization: `Bearer ${token}` },
         }),
       ]);
-      const bData = await budgetRes.json();
-      const tData = await transRes.json();
-      setBudgets(bData);
-      setTransactions(tData);
-      setLoading(false);
+
+      if (budgetRes.ok && transRes.ok) {
+        const bData = await budgetRes.json();
+        const tData = await transRes.json();
+
+        setBudgets(Array.isArray(bData) ? bData : []);
+        setTransactions(Array.isArray(tData) ? tData : []);
+      }
     } catch (err) {
       console.error("Fetch error:", err);
+    } finally {
       setLoading(false);
     }
   };
@@ -48,6 +57,7 @@ const Budget = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = Cookies.get("jwt_token");
+
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/budgets`, {
         method: "POST",
@@ -55,12 +65,16 @@ const Budget = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          category: formData.category,
+          limit: Number(formData.limit), // Ensure it's sent as a number
+        }),
       });
+
       if (response.ok) {
         setIsModalOpen(false);
         setFormData({ category: "", limit: "" });
-        fetchData();
+        await fetchData(); // Wait for refresh
       }
     } catch (err) {
       console.error("Save error:", err);
@@ -69,16 +83,27 @@ const Budget = () => {
 
   const getBudgetDisplayData = () => {
     return categories.map((cat) => {
-      const budgetItem = budgets.find((b) => b.category === cat);
-      const limit = budgetItem ? budgetItem.limit : 0;
+      // Find the budget item using case-insensitive comparison
+      const budgetItem = budgets.find(
+        (b) => b.category && b.category.toLowerCase() === cat.toLowerCase(),
+      );
+
+      const limit = budgetItem ? Number(budgetItem.limit) : 0;
+
+      // Calculate spent amount by filtering and reducing
       const spent = transactions
-        .filter((t) => t.category === cat)
-        .reduce((sum, t) => sum + t.amount, 0);
+        .filter(
+          (t) => t.category && t.category.toLowerCase() === cat.toLowerCase(),
+        )
+        .reduce((sum, t) => sum + Number(t.amount || 0), 0);
+
       return { category: cat, limit, spent };
     });
   };
 
   if (loading) return <div className="loading">Syncing Budgets...</div>;
+
+  const budgetDisplayData = getBudgetDisplayData();
 
   return (
     <div className="budget-page">
@@ -95,7 +120,7 @@ const Budget = () => {
         </header>
 
         <div className="budget-grid">
-          {getBudgetDisplayData().map((item, index) => {
+          {budgetDisplayData.map((item, index) => {
             const percentage =
               item.limit > 0
                 ? Math.min((item.spent / item.limit) * 100, 100)
@@ -129,7 +154,6 @@ const Budget = () => {
           })}
         </div>
 
-        {/* Modal for setting limits */}
         {isModalOpen && (
           <div className="modal-overlay">
             <div className="modal-card animate-slide-up">
